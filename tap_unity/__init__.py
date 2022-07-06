@@ -8,7 +8,7 @@ from singer.schema import Schema
 import requests
 
 
-REQUIRED_CONFIG_KEYS = ["start_date", "username", "password"]
+REQUIRED_CONFIG_KEYS = ["bearer", "organization_id"]
 LOGGER = singer.get_logger()
 
 BASE_API_URL = "https://api.jikan.moe/v4/random/anime"

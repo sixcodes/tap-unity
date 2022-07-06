@@ -13,6 +13,8 @@ LOGGER = singer.get_logger()
 
 BASE_API_URL = "https://api.jikan.moe/v4/random/anime"
 
+session = requests.Session()
+
 
 def get_abs_path(path):
     return os.path.join(os.path.dirname(os.path.realpath(__file__)), path)
@@ -58,6 +60,9 @@ def discover():
 def sync(config, state, catalog):
     """ Sync data from tap source """
     # Loop over selected streams in catalog
+    request_token = config["bearer"]
+    session.headers.update({"Authorization": "Bearer " + request_token})
+    
     for stream in catalog.get_selected_streams(state):
         LOGGER.info("Syncing stream:" + stream.tap_stream_id)
 
@@ -72,7 +77,7 @@ def sync(config, state, catalog):
 
         # TODO: delete and replace this inline function with your own data retrieval process:
         # tap_data = lambda: [{"id": x, "name": "row${x}"} for x in range(1000)]
-        response_data = requests.get(BASE_API_URL).json()
+        response_data = session.get(BASE_API_URL).json()
 
         max_bookmark = None
         for row in response_data:

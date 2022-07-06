@@ -1,4 +1,4 @@
-# tap-unity-2
+# tap-unity
 
 This is a [Singer](https://singer.io) tap that produces JSON-formatted data
 following the [Singer

@@ -13,7 +13,7 @@ def main():
     # Parse command line arguments
     args = singer_utils.parse_args(REQUIRED_CONFIG_KEYS)
 
-    runner = TapUnityRunner()
+    runner = TapUnityRunner(args.config)
 
     # If discover flag was passed, run discovery mode and dump output to stdout
     if args.discover:
@@ -25,7 +25,7 @@ def main():
             catalog = args.catalog
         else:
             catalog = runner.discover()
-        runner.do_sync(args.config, args.state, catalog)
+        runner.do_sync(args.state, catalog)
 
 
 if __name__ == "__main__":

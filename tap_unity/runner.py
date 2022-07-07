@@ -103,6 +103,7 @@ class TapUnityRunner:
             # TODO: delete and replace this inline function with your own data retrieval process:
             response_data = self.__parse_csv_body()
             
+            print(response_data)
 
             max_bookmark = None
             for row in response_data:

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import singer
 from singer import utils
-from runner import TapUnityRunner
+from tap_unity.runner import TapUnityRunner
 
 
 REQUIRED_CONFIG_KEYS = ["config"]

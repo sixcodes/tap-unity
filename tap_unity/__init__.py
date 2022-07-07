@@ -4,7 +4,7 @@ from singer import utils as singer_utils
 from tap_unity.runner import TapUnityRunner
 
 
-REQUIRED_CONFIG_KEYS = ["config"]
+REQUIRED_CONFIG_KEYS = ["auth_token", "organization_id"]
 LOGGER = singer.get_logger()
 
 

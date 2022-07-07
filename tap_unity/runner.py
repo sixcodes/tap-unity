@@ -42,7 +42,7 @@ class TapUnityRunner:
     def __parse_csv_body(self):
         response_data_csv = self.unity_client.make_request()
         reader = csv.DictReader(io.StringIO(response_data_csv))
-        return json.dumps(list(reader))
+        return json.loads(list(reader))
 
 
     def load_schemas(self):
@@ -82,8 +82,26 @@ class TapUnityRunner:
         return Catalog(streams)
 
 
-    def do_sync(self, state, catalog):
-        """ Sync data from tap source """
+    @staticmethod
+    def sync_stream(stream):
+        """
+        Sync a single stream
+        """
+        try:
+            stream.sync()
+        except OSError as e:
+            LOGGER.error(str(e))
+            exit(e.errno)
+
+        except Exception as e:
+            LOGGER.error(str(e))
+            LOGGER.error('Failed to sync endpoint {}, moving on!'
+                         .format(stream.STREAM_NAME))
+            raise e
+
+
+    def do_sync(self, state, catalog: Catalog):
+        print(""" Sync data from tap source """)
         # Loop over selected streams in catalog
         
         for stream in catalog.get_selected_streams(state):

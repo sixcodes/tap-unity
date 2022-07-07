@@ -8,7 +8,7 @@ class UnityClient:
         self.http_session = requests.Session()
         self.base_url = f"https://stats.unityads.unity3d.com/organizations/{organization_id}/reports/acquisitions"
 
-        self.http_session.headers.update({"Authorization": "Bearer " + config.get("bearer")})
+        self.http_session.headers.update({"Authorization": "Bearer " + config.get("auth_token")})
 
     
     def make_request(self) -> str:

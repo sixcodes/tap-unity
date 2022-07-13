@@ -27,6 +27,22 @@ def main():
             catalog = runner.discover()
         runner.do_sync(args.state, catalog)
 
+# @singer_utils.handle_top_exception(LOGGER)
+# def main():
+#     # Parse command line arguments
+#     args = singer_utils.parse_args(REQUIRED_CONFIG_KEYS)
+
+#     runner = TapUnityRunner(args.config)
+
+#     # If discover flag was passed, run discovery mode and dump output to stdout
+    
+#     catalog = runner.discover()
+#     print("CHEGOU AQUI 1")
+#     # print(args.state)
+#     # print(ct.__dict__  for ct in catalog.__dict__["streams"])
+#     runner.do_sync(args.state, catalog)
+#     print("CHEGOU AQUI 2")
+
 
 if __name__ == "__main__":
     main()

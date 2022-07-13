@@ -1,5 +1,6 @@
 import os
 import json
+import statistics
 import singer
 import csv
 import io
@@ -31,6 +32,32 @@ LOGGER = singer.get_logger()
 # ctr
 # ecpm
 # cpi
+
+statistics_schema = {
+  "type": "SCHEMA",
+  "stream": "statistics",
+  "schema": {
+    "properties": {
+      "starts": {
+        "type": "integer"
+      },
+      "timestamp": {
+        "type": ['null', "string"],
+        "format": "date-time"
+      },
+      "campaign_id": {
+        "type": ['null', "string"]
+      },
+      "campaign_name": {
+        "type": ['null', "string"]
+      }
+    }
+  },
+  "key_properties": [
+    "campaign_id"
+  ],
+  "bookmark_properties": ["timestamp"]
+}
 
 class TapUnityRunner:
 
@@ -99,9 +126,32 @@ class TapUnityRunner:
                          .format(stream.STREAM_NAME))
             raise e
 
+    def old_do_sync(self):
+        """
+        Sync all streams
+        :return:
+        """
+        LOGGER.info("Starting sync.")
+
+        # We need the list of product ids for the rankings report
+        # so sync the products first
+        product_ids = []
+        for stream in self.streams:
+            if stream.STREAM_NAME == 'products':
+                self.sync_stream(stream)
+                product_ids = stream.product_ids
+
+        # Sync all but the products
+        for stream in self.streams:
+            if stream.STREAM_NAME == 'products':
+                continue
+
+            self.sync_stream(stream)
+            stream.product_ids = product_ids
+
 
     def do_sync(self, state, catalog: Catalog):
-        print(""" Sync data from tap source """)
+        """ Sync data from tap source """
         # Loop over selected streams in catalog
         
         for stream in catalog.get_selected_streams(state):
@@ -110,10 +160,16 @@ class TapUnityRunner:
             bookmark_column = stream.replication_key
             is_sorted = True  # TODO: indicate whether data is sorted ascending on bookmark value
 
+            # singer.write_schema(
+            #     stream_name=stream.tap_stream_id,
+            #     schema=stream.schema,
+            #     key_properties=stream.key_properties,
+            # )
+
             singer.write_schema(
-                stream_name=stream.tap_stream_id,
-                schema=stream.schema,
-                key_properties=stream.key_properties,
+                stream_name="statistics",
+                schema=statistics_schema,
+                key_properties="timestamp",
             )
 
             # TODO: Olhar macetão do dia no appsfigures
@@ -128,7 +184,8 @@ class TapUnityRunner:
                 # TODO: place type conversions or transformations here
 
                 # write one or more rows to the stream:
-                singer.write_records(stream.tap_stream_id, [row])
+                # singer.write_records(stream.tap_stream_id, [row])
+                singer.write_records("staticsts", [row])
                 if bookmark_column:
                     if is_sorted:
                         # update bookmark to latest value

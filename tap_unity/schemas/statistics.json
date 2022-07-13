@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "stream": "statistics",
+  "schema": {
+    "selected": true,
+    "properties": {
+      "starts": {
+        "type": "integer"
+      },
+      "timestamp": {
+        "type": [
+          "null",
+          "string"
+        ],
+        "format": "date-time"
+      },
+      "campaign_id": {
+        "type": [
+          "null",
+          "string"
+        ]
+      },
+      "campaign_name": {
+        "type": [
+          "null",
+          "string"
+        ]
+      }
+    }
+  },
+  "key_properties": [
+    "campaign_id"
+  ],
+  "bookmark_properties": [
+    "timestamp"
+  ]
+}

@@ -1,6 +1,9 @@
 {
-  "type": "object",
-  "stream": "statistics",
+  "type": [
+    "null",
+    "object"
+  ],
+  "aditional_properties": false,
   "schema": {
     "selected": true,
     "properties": {

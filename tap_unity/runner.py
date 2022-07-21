@@ -14,62 +14,141 @@ from tap_unity.client import UnityClient
 
 LOGGER = singer.get_logger()
 
+schema = {
+    "properties": {
+         
+        "timestamp": {
+            "type": [
+                "null",
+                "string"
+            ],
+            "format": "date-time"
+        },
+        
+        "target_id": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+
+        "target_store_id": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        
+        "target_name": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+
+        "creative_pack_id": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+
+        "creative_pack_name": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+
+        "campaign_id": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+
+        "campaign_name": {
+            "type": [
+                "null",
+                "string"
+            ]
+        }, 
+        
+        "country": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+
+        "starts": {
+            "type": [
+                "null",
+                "integer"
+            ]
+        }, 
+        
+        "views": {
+            "type": [
+                "null",
+                "integer"
+            ]
+        }, 
+        
+        "clicks": {
+            "type": [
+                "null",
+                "integer"
+            ]
+        }, 
+        
+        "installs": {
+            "type": [
+                "null",
+                "integer"
+            ]
+        }, 
+        
+        "spend": {
+            "type": [
+                "null",
+                "integer"
+            ]
+        },        
+    }
+}
+
 # timestamp
+
 # target id
 # target store id
 # target name
+
 # creative pack id
 # creative pack name
+
 # campaign id
 # campaign name
+
 # country
 # starts
 # views
 # clicks
 # installs
 # spend
+
+### TODO: what it means
 # cvr
 # ctr
 # ecpm
 # cpi
 
-statistics_schema = {
-  "type": "SCHEMA",
-  "stream": "statistics",
-  "schema": {
-    "properties": {
-      "starts": {
-        "type": "integer"
-      },
-      "timestamp": {
-        "type": ['null', "string"],
-        "format": "date-time"
-      },
-      "campaign_id": {
-        "type": ['null', "string"]
-      },
-      "campaign_name": {
-        "type": ['null', "string"]
-      }
-    }
-  },
-  "key_properties": [
-    "campaign_id"
-  ],
-  "bookmark_properties": ["timestamp"]
-}
 
 class TapUnityRunner:
 
     def __init__(self, config):
         self.config = config
         self.unity_client = UnityClient(config)
-
-
-    def __parse_csv_body(self):
-        response_data_csv = self.unity_client.make_request()
-        reader = csv.DictReader(io.StringIO(response_data_csv))
-        return json.loads(list(reader))
 
 
     def load_schemas(self):
@@ -168,11 +247,9 @@ class TapUnityRunner:
 
             singer.write_schema(
                 stream_name="statistics",
-                schema=statistics_schema,
+                schema=schema,
                 key_properties="timestamp",
             )
-
-            # TODO: Olhar macetão do dia no appsfigures
 
             # TODO: delete and replace this inline function with your own data retrieval process:
             response_data = self.__parse_csv_body()
@@ -195,4 +272,17 @@ class TapUnityRunner:
                         max_bookmark = max(max_bookmark, row)
             if bookmark_column and not is_sorted:
                 singer.write_state({stream.tap_stream_id: max_bookmark})
+        return
+
+
+    def sync(self):
+        """
+        Sync data from tap source
+        """
+        response = self.unity_client.make_request()
+
+        for row in response:
+            singer.write_schema("statistics", schema, "timestamp")
+            singer.write_record("statistics", row)
+
         return

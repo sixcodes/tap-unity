@@ -28,7 +28,7 @@ class UnityClient:
                 if value == "":
                     parsed_row[header[i]] = None
                 else: 
-                    parsed_row[header[i]] = value
+                    parsed_row[header[i]] = value.replace("\"", "")
             parsed_body.append(parsed_row)
 
         return parsed_body
@@ -41,7 +41,7 @@ class UnityClient:
         query_params = {
             "start": start,
             "end": end,
-            "splitBy": "campaignSet,creativePack,adType,campaign,target,sourceAppId,store,country,platform,osVersion,reachExtension,skadConversionValue",
+            "splitBy": "country,store",
             "fields": "timestamp,target,creativePack,campaign,country,starts,views,clicks,installs,spend",
         }
 

@@ -1,6 +1,6 @@
 import os
 import json
-# import organization
+# import acquisitions
 import singer
 import csv
 import io
@@ -246,7 +246,7 @@ class TapUnityRunner:
             # )
 
             singer.write_schema(
-                stream_name="organization",
+                stream_name="acquisitions",
                 schema=schema,
                 key_properties="timestamp",
             )
@@ -262,7 +262,7 @@ class TapUnityRunner:
 
                 # write one or more rows to the stream:
                 # singer.write_records(stream.tap_stream_id, [row])
-                singer.write_records("organization", [row])
+                singer.write_records("acquisitions", [row])
                 if bookmark_column:
                     if is_sorted:
                         # update bookmark to latest value
@@ -281,8 +281,9 @@ class TapUnityRunner:
         """
         response = self.unity_client.make_request()
 
+        singer.write_schema("acquisitions", schema, "timestamp")
+        
         for row in response:
-            singer.write_schema("organization", schema, "timestamp")
-            singer.write_record("organization", row)
+            singer.write_record("acquisitions", row)
 
         return

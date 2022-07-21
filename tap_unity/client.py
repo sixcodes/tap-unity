@@ -41,7 +41,7 @@ class UnityClient:
         query_params = {
             "start": start,
             "end": end,
-            "splitBy": "store,country",
+            "splitBy": "campaignSet,creativePack,adType,campaign,target,sourceAppId,store,country,platform,osVersion,reachExtension,skadConversionValue",
             "fields": "timestamp,target,creativePack,campaign,country,starts,views,clicks,installs,spend",
         }
 

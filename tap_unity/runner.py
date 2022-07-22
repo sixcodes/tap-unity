@@ -1,12 +1,6 @@
 import os
 import json
-# import acquisitions
 import singer
-import csv
-import io
-
-from singer.catalog import Catalog, CatalogEntry
-from singer.schema import Schema
 
 from tap_unity.utils import get_abs_path
 from tap_unity.client import UnityClient

@@ -1,0 +1,103 @@
+{
+  "properties": {
+       
+      "timestamp": {
+          "type": [
+              "null",
+              "string"
+          ],
+          "format": "date-time"
+      },
+      
+      "target_id": {
+          "type": [
+              "null",
+              "string"
+          ]
+      },
+
+      "target_store_id": {
+          "type": [
+              "null",
+              "string"
+          ]
+      },
+      
+      "target_name": {
+          "type": [
+              "null",
+              "string"
+          ]
+      },
+
+      "creative_pack_id": {
+          "type": [
+              "null",
+              "string"
+          ]
+      },
+
+      "creative_pack_name": {
+          "type": [
+              "null",
+              "string"
+          ]
+      },
+
+      "campaign_id": {
+          "type": [
+              "null",
+              "string"
+          ]
+      },
+
+      "campaign_name": {
+          "type": [
+              "null",
+              "string"
+          ]
+      }, 
+      
+      "country": {
+          "type": [
+              "null",
+              "string"
+          ]
+      },
+
+      "starts": {
+          "type": [
+              "null",
+              "integer"
+          ]
+      }, 
+      
+      "views": {
+          "type": [
+              "null",
+              "integer"
+          ]
+      }, 
+      
+      "clicks": {
+          "type": [
+              "null",
+              "integer"
+          ]
+      }, 
+      
+      "installs": {
+          "type": [
+              "null",
+              "integer"
+          ]
+      }, 
+      
+      "spend": {
+          "type": [
+              "null",
+              "integer"
+          ]
+      }       
+  }
+}

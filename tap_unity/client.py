@@ -7,7 +7,8 @@ import requests
 class UnityClient:
 
     def __init__(self, config):
-        organization_id = config.get("organization_id")
+        self.config = config
+        organization_id = self.config.get("organization_id")
         
         self.http_session = requests.Session()
         self.base_url = f"https://stats.unityads.unity3d.com/organizations/{organization_id}/reports/acquisitions"
@@ -41,8 +42,8 @@ class UnityClient:
         query_params = {
             "start": start,
             "end": end,
-            "splitBy": "country,store",
-            "fields": "timestamp,target,creativePack,campaign,country,starts,views,clicks,installs,spend",
+            "splitBy": self.config.get("split_by"),
+            "fields": self.config.get("fields"),
         }
 
         response = self.http_session.get(self.base_url, params=query_params)

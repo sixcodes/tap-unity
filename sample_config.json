@@ -1,5 +1,7 @@
 {
   "bearer": "my_bearer_token",
   "organization_id": "my_organization_id",
-  "start_date": "2017-01-01T00:00:00Z"
+  "start_date": "2017-01-01T00:00:00Z",
+  "split_by": "[comma separated attributes]",
+  "fields": "[comma separated attributes]"
 }

@@ -14,7 +14,7 @@ This tap:
 
 ## Running the tap
 
-```
+```bash
 $ pip install .
 $ tap-unity --config config.json # fill the config.json with the requested information
 ```

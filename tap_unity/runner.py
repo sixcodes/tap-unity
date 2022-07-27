@@ -1,6 +1,7 @@
 import os
 import json
 import singer
+from tap_unity.streams import AVAILABLE_STREAMS
 
 from tap_unity.utils import get_abs_path
 from tap_unity.client import UnityClient
@@ -15,6 +16,7 @@ class TapUnityRunner:
         self.config = config
         self.state = state
         self.unity_client = UnityClient(self.config, self.state)
+        self.streams = [Stream(state, self.unity_client) for Stream in AVAILABLE_STREAMS]
 
 
     def load_schemas(self):
@@ -34,16 +36,10 @@ class TapUnityRunner:
         """
         LOGGER.info('Starting sync')
 
-        # Load schemas
         schemas = self.load_schemas()
-        response = self.unity_client.make_request()
 
-        singer.write_schema("acquisitions", schemas["acquisitions"], "timestamp")
-        
-        for row in response:
-            if row.get("timestamp") is not None:
-                singer.write_record("acquisitions", row)
-
-        singer.write_state(self.state)
+        for stream in self.streams:
+            stream.set_schema(schemas.get(stream.STREAM_NAME))
+            stream.do_sync()    
 
         return

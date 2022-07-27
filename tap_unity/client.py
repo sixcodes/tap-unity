@@ -1,13 +1,15 @@
 from typing import Dict, List
 from datetime import timedelta, datetime
+from dateutil import parser as date_parser
 
 import requests
 
 
 class UnityClient:
 
-    def __init__(self, config):
+    def __init__(self, config, state):
         self.config = config
+        self.base_date = state.get("base_date")
         organization_id = self.config.get("organization_id")
         
         self.http_session = requests.Session()
@@ -36,7 +38,7 @@ class UnityClient:
         
 
     def make_request(self) -> List[Dict[str, str]]:
-        end = datetime.today()
+        end = date_parser.parse(self.base_date)
         start = end - timedelta(days=1)
 
         query_params = {

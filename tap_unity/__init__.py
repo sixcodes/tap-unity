@@ -11,9 +11,11 @@ LOGGER = singer.get_logger()
 @singer_utils.handle_top_exception(LOGGER)
 def main():
     args = singer_utils.parse_args(REQUIRED_CONFIG_KEYS)
-    config = args.config
 
-    runner = TapUnityRunner(config)
+    runner = TapUnityRunner(
+        config=args.config,
+        state=args.state,
+    )
     runner.sync()
 
 

@@ -11,9 +11,10 @@ LOGGER = singer.get_logger()
 
 class TapUnityRunner:
 
-    def __init__(self, config):
+    def __init__(self, config, state):
         self.config = config
-        self.unity_client = UnityClient(config)
+        self.state = state
+        self.unity_client = UnityClient(self.config, self.state)
 
 
     def load_schemas(self):
@@ -36,10 +37,13 @@ class TapUnityRunner:
         # Load schemas
         schemas = self.load_schemas()
         response = self.unity_client.make_request()
-        
+
         singer.write_schema("acquisitions", schemas["acquisitions"], "timestamp")
         
         for row in response:
-            singer.write_record("acquisitions", row)
+            if row.get("timestamp") is not None:
+                singer.write_record("acquisitions", row)
+
+        singer.write_state(self.state)
 
         return

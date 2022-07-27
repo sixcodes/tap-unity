@@ -24,6 +24,8 @@ First you'll need to fill the `config.json` file with the following information:
   "fields": "timestamp,target,creativePack,campaign,country,starts,views,clicks,installs,spend"
 }
 ```
+Remember that `split_by` and `fields` may vary according to the [Unity API](https://services.docs.unity.com/statistics/v1).
+
 
 With the `config.json` file filled out, you need to set a `state.json` file like the example below:
 

@@ -20,12 +20,18 @@ First you'll need to fill the `config.json` file with the following information:
 {
   "auth_token": "[auth token hash]",
   "organization_id": "[organization id code]",
+  "split_by": "[split by field]",
+  "fields": "[fields to include]",
+}
+```
+Remember that `split_by` and `fields` may vary according to the [Unity API](https://services.docs.unity.com/statistics/v1) and they are not required, if you don't specify them, the tap will use the default values which are:
+
+```json
+{
   "split_by": "country,store",
   "fields": "timestamp,target,creativePack,campaign,country,starts,views,clicks,installs,spend"
 }
 ```
-Remember that `split_by` and `fields` may vary according to the [Unity API](https://services.docs.unity.com/statistics/v1).
-
 
 With the `config.json` file filled out, you need to set a `state.json` file like the example below:
 

@@ -8,7 +8,7 @@ import requests
 class UnityClient:
 
     def __init__(self, config, state):
-        self.config = config
+        self.config: Dict[str, str] = config
         self.last_record = state.get("last_record")
         self.organization_id = self.config.get("organization_id")
         
@@ -46,8 +46,8 @@ class UnityClient:
         query_params = {
             "start": start,
             "end": end,
-            "splitBy": self.config.get("split_by"),
-            "fields": self.config.get("fields"),
+            "splitBy": self.config.get("split_by", "country,store"),
+            "fields": self.config.get("fields", "timestamp,target,creativePack,campaign,country,starts,views,clicks,installs,spend"),
         }
 
         url = self.__build_resouce_url("acquisitions")

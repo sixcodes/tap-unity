@@ -11,7 +11,7 @@ class AcquisitionsStream(UnityBase):
         if not self.schema:
             raise SchemaNotSetError()
 
-        response = self.unity_client.make_request()
+        response = self.unity_client.make_acquisitions_request()
         singer.write_schema(
             self.STREAM_NAME, 
             self.schema, 

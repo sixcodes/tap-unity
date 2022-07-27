@@ -10,13 +10,15 @@ class UnityClient:
     def __init__(self, config, state):
         self.config = config
         self.last_record = state.get("last_record")
-        organization_id = self.config.get("organization_id")
+        self.organization_id = self.config.get("organization_id")
         
         self.http_session = requests.Session()
-        self.base_url = f"https://stats.unityads.unity3d.com/organizations/{organization_id}/reports/acquisitions"
-
         self.http_session.headers.update({"Authorization": "Bearer " + config.get("auth_token")})
 
+
+    def __build_resouce_url(self, resource_name: str) -> str:
+        return f"https://stats.unityads.unity3d.com/organizations/{self.organization_id}/reports/{resource_name}"
+    
     
     def parse_csv_body(self, csv_body: str) -> list:
         splited_body = csv_body.split("\n")
@@ -37,7 +39,7 @@ class UnityClient:
         return parsed_body
         
 
-    def make_request(self) -> List[Dict[str, str]]:
+    def make_acquisitions_request(self) -> List[Dict[str, str]]:
         end = date_parser.parse(self.last_record)
         start = end - timedelta(days=1)
 
@@ -48,6 +50,7 @@ class UnityClient:
             "fields": self.config.get("fields"),
         }
 
-        response = self.http_session.get(self.base_url, params=query_params)
+        url = self.__build_resouce_url("acquisitions")
+        response = self.http_session.get(url, params=query_params)
         parsed = self.parse_csv_body(response.content.decode("utf-8"))
         return parsed

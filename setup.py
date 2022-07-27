@@ -2,7 +2,7 @@
 from setuptools import setup
 
 setup(
-    name="tap-unity-2",
+    name="tap-unity",
     version="0.1.0",
     description="Singer.io tap for extracting data",
     author="Stitch",
@@ -16,7 +16,7 @@ setup(
     ],
     entry_points="""
     [console_scripts]
-    tap-unity-2=tap_unity:main
+    tap-unity=tap_unity:main
     """,
     packages=["tap_unity"],
     package_data = {

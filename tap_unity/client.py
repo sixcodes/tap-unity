@@ -9,7 +9,7 @@ class UnityClient:
 
     def __init__(self, config, state):
         self.config = config
-        self.base_date = state.get("base_date")
+        self.last_record = state.get("last_record")
         organization_id = self.config.get("organization_id")
         
         self.http_session = requests.Session()
@@ -38,7 +38,7 @@ class UnityClient:
         
 
     def make_request(self) -> List[Dict[str, str]]:
-        end = date_parser.parse(self.base_date)
+        end = date_parser.parse(self.last_record)
         start = end - timedelta(days=1)
 
         query_params = {

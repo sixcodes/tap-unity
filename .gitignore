@@ -101,3 +101,7 @@ rsa-key
 tags
 singer-check-tap-data
 state.json
+
+output.json
+state.json
+sample_state.bkp.json

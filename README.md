@@ -14,10 +14,32 @@ This tap:
 
 ## Running the tap
 
-```bash
-$ pip install .
-$ tap-unity --config config.json # fill the config.json with the requested information
+First you'll need to fill the `config.json` file with the following information:
+
+```json
+{
+  "auth_token": "[auth token hash]",
+  "organization_id": "[organization id code]",
+  "split_by": "country,store",
+  "fields": "timestamp,target,creativePack,campaign,country,starts,views,clicks,installs,spend"
+}
 ```
+
+With the `config.json` file filled out, you need to set a `state.json` file like the example below:
+
+```json
+{
+  "last_record": "2018-01-01T00:00:00.000Z"
+}
+```
+
+Now you can run the tap using:
+
+```bash 
+$ pip install .
+$ tap-unity --config config.json --state state.json
+```
+
 
 
 Copyright &copy; 2018 Stitch

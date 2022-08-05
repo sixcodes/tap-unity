@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="tap-unity",
-    version="0.1.3",
+    version="0.1.4",
     description="Singer.io tap for extracting data from Unity API",
     author="Jesue Junior <jesuesousa@gmail.com>",
     url="http://singer.io",
@@ -20,6 +20,6 @@ setup(
     """,
     packages=find_packages(),
     package_data = {
-        "schemas": ["tap_unity/schemas/*.json"]
+        "tap_unity": ["schemas/*.json"]
     }
 )

@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name="tap-unity",
-    version="0.1.2",
-    description="Singer.io tap for extracting data",
-    author="Stitch",
+    version="0.1.3",
+    description="Singer.io tap for extracting data from Unity API",
+    author="Jesue Junior <jesuesousa@gmail.com>",
     url="http://singer.io",
     classifiers=["Programming Language :: Python :: 3 :: Only"],
     py_modules=["tap_unity"],
@@ -18,9 +18,8 @@ setup(
     [console_scripts]
     tap-unity=tap_unity:main
     """,
-    packages=["tap_unity"],
+    packages=find_packages(),
     package_data = {
         "schemas": ["tap_unity/schemas/*.json"]
-    },
-    include_package_data=True,
+    }
 )

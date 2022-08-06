@@ -9,8 +9,8 @@ class UnityClient:
 
     def __init__(self, config, state):
         self.config: Dict[str, str] = config
-        self.last_record = state.get("last_record")
-        self.organization_id = self.config.get("organization_id")
+        self.last_record: str = state.get("last_record", config.get("start_date", ""))
+        self.organization_id: str = self.config.get("organization_id")
         
         self.http_session = requests.Session()
         self.http_session.headers.update({"Authorization": "Bearer " + config.get("auth_token")})

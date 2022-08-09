@@ -5,10 +5,10 @@ class UnityBase:
     Stram base class
     """
 
-    # BASE_URL = ""
     STREAM_NAME = ""
 
-    def __init__(self, state, unity_client):
+    def __init__(self, config, state, unity_client):
+        self.config = config
         self.state = state
         self.unity_client = unity_client
 

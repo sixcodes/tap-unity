@@ -21,4 +21,7 @@ class AcquisitionsStream(UnityBase):
             if row.get("timestamp") is not None:
                 singer.write_record(self.STREAM_NAME, row)
 
+        if "last_record" not in self.state:
+            self.state["last_record"] = self.config.get("start_date", "")
+        
         singer.write_state(self.state)

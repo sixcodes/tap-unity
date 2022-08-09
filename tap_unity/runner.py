@@ -16,7 +16,7 @@ class TapUnityRunner:
         self.config = config
         self.state = state
         self.unity_client = UnityClient(self.config, self.state)
-        self.streams = [Stream(state, self.unity_client) for Stream in AVAILABLE_STREAMS]
+        self.streams = [Stream(config, state, self.unity_client) for Stream in AVAILABLE_STREAMS]
 
 
     def load_schemas(self):

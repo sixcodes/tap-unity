@@ -1,5 +1,5 @@
 from typing import Dict, List
-from datetime import timedelta, datetime
+from datetime import timedelta
 from dateutil import parser as date_parser
 
 import requests

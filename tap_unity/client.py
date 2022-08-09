@@ -47,7 +47,7 @@ class UnityClient:
             "start": start,
             "end": end,
             "splitBy": self.config.get("split_by", "country,store"),
-            "fields": self.config.get("fields", "timestamp,target,creativePack,campaign,country,starts,views,clicks,installs,spend"),
+            "fields": self.config.get("fields", "all"),
         }
 
         url = self.__build_resouce_url("acquisitions")

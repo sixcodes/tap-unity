@@ -7,8 +7,10 @@ import requests
 
 class UnityClient:
 
-    def __init__(self, config, state):
-        self.config: Dict[str, str] = config
+    BASE_URL = "https://stats.unityads.unity3d.com"
+
+    def __init__(self, config: Dict[str, str], state: Dict[str, str]):
+        self.config = config
         self.last_record: str = state.get("last_record", config.get("start_date", ""))
         self.organization_id: str = self.config.get("organization_id")
         
@@ -17,7 +19,7 @@ class UnityClient:
 
 
     def __build_resouce_url(self, resource_name: str) -> str:
-        return f"https://stats.unityads.unity3d.com/organizations/{self.organization_id}/reports/{resource_name}"
+        return f"{self.BASE_URL}/organizations/{self.organization_id}/reports/{resource_name}"
     
     
     def parse_csv_body(self, csv_body: str) -> list:
@@ -37,6 +39,12 @@ class UnityClient:
             parsed_body.append(parsed_row)
 
         return parsed_body
+
+    
+    def make_request(self, endpoint: str, params: Dict[str, str]) -> List[Dict[str, str]]:
+        response = self.http_session.get(f"{self.BASE_URL}/{endpoint}", params=params)
+        parsed = self.parse_csv_body(response.content.decode("utf-8"))
+        return parsed
         
 
     def make_acquisitions_request(self) -> List[Dict[str, str]]:

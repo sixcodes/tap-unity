@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="tap-unity",
-    version="0.1.6"
+    version="0.1.7"
             "",
     description="Singer.io tap for extracting data from Unity API",
     author="Jesue Junior <jesuesousa@gmail.com>",

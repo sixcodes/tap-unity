@@ -8,7 +8,7 @@ LOGGER = singer.get_logger()
 
 class UnityBase:
     """
-    Stram base class
+    Stream base class
     """
 
     STREAM_NAME = ""

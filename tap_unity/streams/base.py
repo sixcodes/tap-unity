@@ -4,6 +4,8 @@ from tap_unity.client import UnityClient
 from tap_unity.utils import SchemaNotSetError
 
 
+LOGGER = singer.get_logger()
+
 class UnityBase:
     """
     Stram base class
@@ -60,6 +62,7 @@ class UnityBase:
         response = self.make_request()
        
         new_bookmark_date = self.bookmark_date
+        LOGGER.info(f"Start bookmark: {new_bookmark_date}")
         with singer.metrics.Counter("record_count", {"endpoint": self.STREAM_NAME}) as counter:
             for row in response:
                 if row.get("timestamp") is not None:
@@ -68,7 +71,8 @@ class UnityBase:
                         stream=self.STREAM_NAME,
                         record=row
                     ))
-                    # singer.write_record(self.STREAM_NAME, row)
+
             counter.increment()
         self.state = singer.write_bookmark(self.state, self.STREAM_NAME, "last_record", new_bookmark_date)
+        LOGGER.warning(f"state: {self.state}")
 

@@ -40,6 +40,6 @@ class TapUnityRunner:
 
         for stream in self.streams:
             stream.set_schema(schemas.get(stream.STREAM_NAME))
-            stream.do_sync()    
+            stream.sync()
 
         return

@@ -17,9 +17,37 @@ class UnityBase:
         self.state: Dict[str, str] = state
         self.unity_client: UnityClient = unity_client
 
+        self.bookmark_date = singer.get_bookmark(
+            state=state, 
+            tap_stream_id=self.STREAM_NAME, 
+            key="last_record"
+        )
+
+        if not self.bookmark_date:
+            self.bookmark_date = self.state.get(
+                "last_record", 
+                self.config.get("start_date", "")
+            )
+
     
     def set_schema(self, schema):
         self.schema = schema
+
+
+    def make_request(self, endpoint=None, params=None):
+        if endpoint is None:
+            endpoint = self.ENDOINT
+
+        if params is None:
+            params = {}
+        
+        return self.unity_client.make_request(endpoint=endpoint, params=params)
+
+
+    def sync(self):
+        singer.write_schema(self.STREAM_NAME,  self.schema, "timestamp")
+        self.do_sync()
+        singer.write_state(self.state)
 
 
     def do_sync(self):
@@ -29,18 +57,18 @@ class UnityBase:
         if not self.schema:
             raise SchemaNotSetError()
 
-        response = self.unity_client.make_request(endpoint=self.ENDOINT, params={})
-        singer.write_schema(
-            self.STREAM_NAME, 
-            self.schema, 
-            "timestamp")
-        
-        for row in response:
-            if row.get("timestamp") is not None:
-                singer.write_record(self.STREAM_NAME, row)
-
-        if "last_record" not in self.state:
-            self.state["last_record"] = self.config.get("start_date", "")
-        
-        singer.write_state(self.state)
+        response = self.make_request()
+       
+        new_bookmark_date = self.bookmark_date
+        with singer.metrics.Counter("record_count", {"endpoint": self.STREAM_NAME}) as counter:
+            for row in response:
+                if row.get("timestamp") is not None:
+                    new_bookmark_date = max(new_bookmark_date, row["timestamp"])
+                    singer.write_message(singer.RecordMessage(
+                        stream=self.STREAM_NAME,
+                        record=row
+                    ))
+                    # singer.write_record(self.STREAM_NAME, row)
+            counter.increment()
+        self.state = singer.write_bookmark(self.state, self.STREAM_NAME, "last_record", new_bookmark_date)
 

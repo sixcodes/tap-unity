@@ -55,8 +55,10 @@ class UnityClient:
             "start": start,
             "end": end,
             "splitBy": self.config.get("split_by", "country,store"),
-            "fields": self.config.get("fields", "all"),
         }
+
+        if self.config.get("fields"):
+            query_params.update({"fields": self.config.get("fields"),})
 
         url = self.__build_resouce_url("acquisitions")
         response = self.http_session.get(url, params=query_params)

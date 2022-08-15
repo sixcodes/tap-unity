@@ -1,3 +1,4 @@
+import datetime
 from typing import Dict, List
 from datetime import timedelta
 from dateutil import parser as date_parser
@@ -48,8 +49,8 @@ class UnityClient:
         
 
     def make_acquisitions_request(self) -> List[Dict[str, str]]:
-        end = date_parser.parse(self.last_record)
-        start = end - timedelta(days=1)
+        start = date_parser.parse(self.last_record) - timedelta(days=1)
+        end = min((datetime.today() - timedelta(1)), date_parser.parse(self.last_record) + timedelta(30))
 
         query_params = {
             "start": start,

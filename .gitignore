@@ -108,3 +108,4 @@ sample_state.bkp.json
 sample_state.json
 
 main*.py
+.venv/

@@ -1,3 +1,4 @@
+import pytz
 from typing import Dict, List
 from datetime import timedelta, datetime
 from dateutil import parser as date_parser
@@ -20,6 +21,15 @@ class UnityClient:
 
     def __build_resouce_url(self, resource_name: str) -> str:
         return f"{self.BASE_URL}/organizations/{self.organization_id}/reports/{resource_name}"
+
+    
+    def __get_start_end(self):
+        start = date_parser.parse(self.last_record) - timedelta(days=1)
+        end = min(
+            (datetime.today() - timedelta(1)).replace(tzinfo=pytz.UTC), 
+            (date_parser.parse(self.last_record) + timedelta(30)).replace(tzinfo=pytz.UTC)
+        )
+        return start, end
     
     
     def parse_csv_body(self, csv_body: str) -> list:
@@ -45,12 +55,10 @@ class UnityClient:
         response = self.http_session.get(f"{self.BASE_URL}/{endpoint}", params=params)
         parsed = self.parse_csv_body(response.content.decode("utf-8"))
         return parsed
-        
+
 
     def make_acquisitions_request(self) -> List[Dict[str, str]]:
-        start = date_parser.parse(self.last_record) - timedelta(days=1)
-        end = min((datetime.today() - timedelta(1)), date_parser.parse(self.last_record) + timedelta(30))
-
+        start, end = self.__get_start_end()        
         query_params = {
             "start": start,
             "end": end,

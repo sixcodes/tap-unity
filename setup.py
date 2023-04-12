@@ -3,11 +3,11 @@ from setuptools import setup, find_packages
 
 setup(
     name="tap-unity",
-    version="0.2.3"
+    version="0.3.0"
             "",
     description="Singer.io tap for extracting data from Unity API",
     author="Jesue Junior <jesuesousa@gmail.com>",
-    url="http://singer.io",
+    url="http://github.com/sixcodes/tap-unity",
     classifiers=["Programming Language :: Python :: 3 :: Only"],
     py_modules=["tap_unity"],
     install_requires=[

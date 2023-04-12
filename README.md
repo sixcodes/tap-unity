@@ -6,8 +6,8 @@ spec](https://github.com/singer-io/getting-started/blob/master/SPEC.md).
 
 This tap:
 
-- Pulls raw data from unity api
-- Outputs the schema for each resource
+- Pulls raw data from Unity Acquisitions Report api
+- Outputs the schema
 - Incrementally pulls data based on the input state
 
 ---
@@ -21,17 +21,11 @@ First you'll need to fill the `config.json` file with the following information:
   "auth_token": "[auth token hash]",
   "organization_id": "[organization id code]",
   "split_by": "[split by field]",
-  "fields": "[fields to include]",
+  "granularity": "all|hour|day|week|month|quarter|year"
 }
 ```
 Remember that `split_by` and `fields` may vary according to the [Unity API](https://services.docs.unity.com/statistics/v1) and they are not required, if you don't specify them, the tap will use the default values which are:
 
-```json
-{
-  "split_by": "country,store",
-  "fields": "timestamp,target,creativePack,campaign,country,starts,views,clicks,installs,spend"
-}
-```
 
 With the `config.json` file filled out, you need to set a `state.json` file like the example below:
 
@@ -47,7 +41,3 @@ Now you can run the tap using:
 $ pip install .
 $ tap-unity --config config.json --state state.json
 ```
-
-
-
-Copyright &copy; 2018 Stitch

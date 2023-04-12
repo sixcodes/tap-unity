@@ -62,13 +62,19 @@ class UnityClient:
         query_params = {
             "start": start,
             "end": end,
-            "splitBy": self.config.get("split_by", "country,store"),
+            "scale": self.config.get("granularity"),
+            "adTypes":  "video,playable",
+            "stores": "apple,google",
+            "splitBy": self.config.get("split_by", "store,country,campaignSet,creativePack,adType,campaign,target,sourceAppId,platform,reachExtension,skadConversionValue"),
         }
 
         if self.config.get("fields"):
             query_params.update({"fields": self.config.get("fields"),})
-
+        else:
+            all_fields = "timestamp,campaignSet,creativePack,adType,campaign,target,sourceAppId,store,country,platform,starts,views,clicks,installs,spend,skadInstalls,skadCpi,skadConversion"
+            query_params.update({"fields": all_fields })
         url = self.__build_resouce_url("acquisitions")
+        print(f"---------URL: {url}, query: {query_params}")
         response = self.http_session.get(url, params=query_params)
         parsed = self.parse_csv_body(response.content.decode("utf-8"))
         return parsed
